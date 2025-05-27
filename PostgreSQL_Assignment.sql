@@ -40,6 +40,60 @@ VALUES
 (2,2,2,'  2024-05-12 16:20:00','Bankwood Area  ',' Juvenile seen'),
 (3,3,3,' 2024-05-15 09:10:00',' Bamboo Grove East',' Feeding observed'),
 (4,2,1,' 2024-05-18 18:30:00',' Snowfall Pass ',NULL);
-              
 
+
+
+-- Problem 1 solutions
+INSERT INTO rangers
+VALUES(4,'Derek Fox','Coastal Plains');
+
+-- Problem 2 solutions
+SELECT * FROM species;
+SELECT COUNT(DISTINCT species_id) AS unique_species_count
+FROM sightings;
+
+-- Problem 3 solution
+SELECT * FROM sightings
+WHERE location ILIKE '%Pass%';
+
+-- Problem 4 solution
+SELECT r.name, COUNT(s.sighting_id) AS total_sightings
+FROM rangers AS r
+LEFT JOIN sightings AS s ON r.ranger_id = s.ranger_id
+GROUP BY r.name;
+
+-- Problem 5 solution
+SELECT common_name
+FROM species
+WHERE species_id NOT IN (
+    SELECT DISTINCT species_id FROM sightings
+);
+
+-- Problem 6 solution
+SELECT sp.common_name, s.sighting_time, r.name
+FROM sightings AS s
+JOIN species AS sp ON s.species_id = sp.species_id
+JOIN rangers AS r ON s.ranger_id = r.ranger_id
+ORDER BY s.sighting_time DESC
+LIMIT 2;
+
+-- Problem 7 solution
+UPDATE species
+SET conservation_status = 'Historic'
+WHERE discovery_date < '1800-01-01';
+
+-- Problem 8 solution
+SELECT sighting_id,
+       CASE
+           WHEN EXTRACT(HOUR FROM sighting_time) < 12 THEN 'Morning'
+           WHEN EXTRACT(HOUR FROM sighting_time) BETWEEN 12 AND 17 THEN 'Afternoon'
+           ELSE 'Evening'
+       END AS time_of_day
+FROM sightings;
+
+-- Problem 9 solution
+DELETE FROM rangers
+WHERE ranger_id NOT IN (
+    SELECT DISTINCT ranger_id FROM sightings
+);
 
