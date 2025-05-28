@@ -1,3 +1,5 @@
+-- create database
+CREATE DATABASE assignment_2;
 -- create rangers table and insert data
 CREATE TABLE rangers (
   ranger_id SERIAL PRIMARY KEY,
